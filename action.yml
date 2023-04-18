@@ -1,4 +1,4 @@
-name: "Git Repo Sync"
+name: "Repo Sync"
 author: "Arash Hatami"
 description: "Synchronize code to other gi platforms."
 branding:
