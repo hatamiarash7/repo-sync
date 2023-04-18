@@ -1,0 +1,26 @@
+name: "Git Repo Sync"
+author: "Arash Hatami"
+description: "Synchronize code to other gi platforms."
+branding:
+  icon: "cloud"
+  color: "blue"
+inputs:
+  url:
+    description: "Target Repository URL"
+    required: true
+  username:
+    description: "Target Repository Username"
+    required: true
+  token:
+    description: "Target Platform Token"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - run: ${{ github.action_path }}/entrypoint.sh
+      shell: bash
+      env:
+        TARGET_URL: ${{ inputs.url }}
+        TARGET_USERNAME: ${{ inputs.username }}
+        TARGET_TOKEN: ${{ inputs.token }}
+        GITHUB_EVENT_REF: ${{ github.event.ref }}
