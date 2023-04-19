@@ -9,23 +9,38 @@ print_header() {
     printf "%s\n\n" ""
 }
 
-sync() {
+_init(){
     printf " -----> Add remote\n"
 
     git remote add target https://${TARGET_USERNAME}:${TARGET_TOKEN}@${TARGET_URL#https://}
+}
+
+_push() {
+    printf " -----> Push\n"
+    git push -f --all target
+    git push -f --tags target
+}
+
+_delete(){
+    printf " -----> Delete\n"
+    git push -d target ${GITHUB_EVENT_REF}
+}
+
+sync() {
+    _init
 
     case "${GITHUB_EVENT_NAME}" in
         push)
-            printf " -----> Push\n"
-            git push -f --all target
-            git push -f --tags target
+            _push
+            ;;
+        release)
+            _push
             ;;
         delete)
-            printf " -----> Delete\n"
-            git push -d target ${GITHUB_EVENT_REF}
+            _delete
             ;;
         *)
-            break
+            echo -n "Unknown"
             ;;
     esac
     printf " -----> Finished\n"
